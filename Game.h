@@ -1,42 +1,48 @@
 #pragma once
-
-#include <iostream>
-#include <ctime>
-
-
+#include<map>
 
 #include "Player.h"
-
-/*
-	Class that acts as the game engine / wrapper class.
-*/
-
+#include "Bullet.h"
+#include "Enemy.h"
+#include <cmath>
 class Game
 {
 private:
-	//Private variables
-	sf::VideoMode videoMode;
+	//Window
 	sf::RenderWindow* window;
-	bool endGame;
-	sf::Event sfmlEvent;
 
-	Player player;
+	//Resources
+	std::map<std::string, sf::Texture*> textures;
+	std::vector<Bullet*> bullets;
 
-	//Initializers
-	void initVariables();
+	//Player
+	Player* player;
+
+	//Enemies
+	float spawnTimer;
+	float spawnTimerMax;
+	std::vector<Enemy*> enemies;
+	
+
+	//Private functions
 	void initWindow();
+	void initTextures();
+	
+	void initPlayer();
+	void initEnemies();
 public:
-	//Constructors and Destructors
 	Game();
-	~Game();
-	//Accessors
-
-	//Modifiers
+	virtual ~Game();
 
 	//Functions
-	const bool running() const;
-	void pollEvents();
+	void run();
 
+
+	void updatePollEvents();
+	void updateInput();
+	void updateBullets();
+	void updateEnemies();
 	void update();
 	void render();
+
 };
