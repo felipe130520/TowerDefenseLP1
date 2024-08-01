@@ -56,7 +56,7 @@ const sf::FloatRect Player::getBounds() const
 
 void Player::move(const float dirX, const float dirY)
 {
-	this->movementSpeed = 10.f;
+	this->movementSpeed = 14.f;
 
 	this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
