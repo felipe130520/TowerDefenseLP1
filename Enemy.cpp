@@ -2,7 +2,7 @@
 
 void Enemy::initShape()
 {
-	this->shape.setRadius(rand()%20 + 20);
+	this->shape.setRadius(rand()%25 + 25);
 	this->shape.setPointCount(rand() % 20 + 3);
 	this->shape.setFillColor(sf::Color(rand()%255 +1, rand()%255 + 1, rand()%255 + 1,255));
 }
@@ -10,6 +10,7 @@ void Enemy::initShape()
 void Enemy::initVariables()
 {
 	 this->type = 0;
+	 this->speed = 2.f;
 	 this->hpMax=10;
 	 this->hp=0;
 	 this->damage=1;
@@ -28,10 +29,19 @@ Enemy::~Enemy()
 {
 }
 
+
+
+const sf::FloatRect Enemy::getBounds() const
+{
+	return this->shape.getGlobalBounds();
+}
+
 //Functions
 void Enemy::update()
 {
+	this->shape.move(0.f, this->speed);
 }
+
 
 void Enemy::render(sf::RenderTarget* target)
 {

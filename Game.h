@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
-#include <cmath>
+
 class Game
 {
 private:
@@ -23,11 +23,20 @@ private:
 	float spawnTimerMax;
 	std::vector<Enemy*> enemies;
 	
+	//GUI
+	sf::Font font;
+	sf::Text pointText;
+
+	//Background
+	sf::Texture BackgroundTexture;
+	sf::Sprite Background;
 
 	//Private functions
 	void initWindow();
 	void initTextures();
-	
+	void initGUI();
+	void initBackground();
+
 	void initPlayer();
 	void initEnemies();
 public:
@@ -40,9 +49,15 @@ public:
 
 	void updatePollEvents();
 	void updateInput();
+	void updateGUI();
 	void updateBullets();
-	void updateEnemies();
+	void updateEnemiesAndCombat();
+	
 	void update();
+
+	void renderGUI();
+	void renderBackground();
 	void render();
 
 };
+

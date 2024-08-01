@@ -1,15 +1,11 @@
 #pragma once
 
 #include<SFML/Graphics.hpp>
-#include<SFML/Window.hpp>
-#include<iostream>
-#include<vector>
+#include<SFML/System.hpp>
+#include <iostream>
 class Player
 {
 private:
-    sf::Vector2f position;
-    sf::FloatRect bounds;
-	
 	sf::Sprite sprite;
 	sf::Texture texture;
 	

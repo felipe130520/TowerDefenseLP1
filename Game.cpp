@@ -15,9 +15,32 @@ void Game::initTextures()
 
 }
 
+void Game::initGUI()
+{
+	//Load font
+	if (!this->font.loadFromFile("Fonts/Honk_Regular.ttf")) {
+		std::cout << "ERROR GAME FAILED TO LOAD FONT";
+	}
+	//Init point text
+	this->pointText.setFont(this->font);
+	this->pointText.setCharacterSize(12);
+	this->pointText.setFillColor(sf::Color::White);
+	this->pointText.setString("test");
+}
+
+void Game::initBackground()
+{
+	if (!this->BackgroundTexture.loadFromFile("Textures/street.png")) {
+		std::cout << "ERROR::GAME::COULD NOT LOAD BACKGROUND"<<std::endl;
+	}
+	this->Background.setTexture(this->BackgroundTexture);
+	
+	
+}
+
 void Game::initPlayer()
 {
-	 this->spawnTimer = this->spawnTimerMax;
+	this->spawnTimer = this->spawnTimerMax;
 	 this-> spawnTimerMax = 20.f;
 	this->player = new Player();
 
@@ -34,6 +57,8 @@ Game::Game()
 
 	this->initWindow();
 	this->initTextures();
+	this->initGUI();
+	this->initBackground();
 	this->initPlayer();
 	this->initEnemies();
 }
@@ -101,20 +126,15 @@ void Game::updateInput()
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->player->canAttack()) {
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
-    sf::Vector2f playerPosition = this->player->getPos();
-    sf::Vector2f direction = sf::Vector2f(mousePosition.x, mousePosition.y) - playerPosition;
-    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
-    if (length != 0) {
-        direction /= length;
-
-        this->bullets.push_back(new Bullet(this->textures["BULLET"],
-            this->player->getPos().x + this->player->getBounds().width / 2.f,
-            this->player->getPos().y,
-            direction.x, direction.y, 10.f));
-    }
+		this->bullets.push_back(new Bullet(this->textures["BULLET"],this->player->getPos().x + this->player->getBounds().width/2.f,
+			this->player->getPos().y
+			, 0.f, -1.f, 10.f));
+	}
 }
+
+void Game::updateGUI()
+{
+
 }
 
 void Game::updateBullets()
@@ -131,26 +151,49 @@ void Game::updateBullets()
 			this->bullets.erase(this->bullets.begin()+ counter);
 			--counter;
 
-			//Balas sï¿½o deletadas? OK
+			//Balas são deletadas? OK
 			//std::cout << this->bullets.size() << "\n";
 		}
 		counter++;
 	}
 }
 
-void Game::updateEnemies()
+void Game::updateEnemiesAndCombat()
 {
 	this->spawnTimer += 0.5f;
 	if (this->spawnTimer > this->spawnTimerMax) {
 
-		this->enemies.push_back(new Enemy(rand()%200, rand()% 200));
+		this->enemies.push_back(new Enemy(rand()%this->window->getSize().x -20.f, -100.f));
 		this->spawnTimer = 0.f;
 	}
-	for (auto* enemy : this->enemies) {
-		enemy->update();
+
+	for (int i = 0;i < enemies.size();i++) {
+		bool enemy_removed = false;
+		enemies[i]->update();
+
+
+		//Remove enemy at the bottom of the screen
+		for (size_t k = 0;k < this->bullets.size() && !enemy_removed;k++) {
+
+			if (this->bullets[k]->getBounds().intersects(this->enemies[i]->getBounds())) {
+				this->bullets.erase(this->bullets.begin() + k);
+				this->enemies.erase(this->enemies.begin() + i);
+				enemy_removed = true;
+			}
+		}
+		//Remove enemy at the bottom of the screen
+		if (!enemy_removed) {
+			if (this->enemies[i]->getBounds().top > this->window->getSize().y) {
+				this->enemies.erase(this->enemies.begin() + i);
+				enemy_removed = true;
+				//std::cout << this->enemies.size() << "\n";
+			}
+		}
 	}
 	
 }
+
+
 
 void Game::update()
 {
@@ -158,17 +201,33 @@ void Game::update()
 
 	this->updateInput();
 
+
 	this->player->update();
 	
 	this->updateBullets();
 
-	this->updateEnemies();
+	this->updateEnemiesAndCombat();
+
+	this->updateGUI();
+}
+
+void Game::renderGUI()
+{
+	this->window->draw(this->pointText);
+}
+
+void Game::renderBackground()
+{
+	this->window->draw(this->Background);
 }
 
 void Game::render()
 {
 	//Clear
 	this->window->clear();
+	//Draw background
+	this->renderBackground();
+
 	//Draw stuff
 
 	this->player->render(*this->window);
@@ -180,6 +239,8 @@ void Game::render()
 	for (auto* enemy : this->enemies) {
 		enemy->render(this->window);
 	}
+
+	this->renderGUI();
 
 	//Display stuff
 	this->window->display();
