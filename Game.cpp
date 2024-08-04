@@ -139,11 +139,11 @@ void Game::updatePollEvents()
 {
 	sf::Event e;
 	while (this->window->pollEvent(e)) {
-		if (e.Event::type == sf::Event::Closed) {
+		if (e.type == sf::Event::Closed) {
 			this->window->close();
 		}
-		if (e.Event::type && e.Event::key.code == sf::Keyboard::Escape) {
-			this->window->close();
+		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
+            this->window->close();
 		}
 	}
 }
