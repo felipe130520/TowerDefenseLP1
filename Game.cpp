@@ -251,20 +251,23 @@ void Game::updateEnemiesAndCombat()
 {
 	this->spawnTimer += 0.5f;
 	if (this->spawnTimer > this->spawnTimerMax) {
-
+		//spawn em cima da tela
 		this->enemies.push_back(new Enemy(rand()%this->window->getSize().x -25.f, -100.f));
 		this->spawnTimer = 0.f;
 	}
+
+	// calcula o centro da tela
+    sf::Vector2f center(this->window->getSize().x / 2.f, this->window->getSize().y / 2.f);
+
 	// // // // //
-	for (auto* enemy : this->enemies) {
+	/*for (auto* enemy : this->enemies) {
 		enemy->update();
-	}
+	}*/
 
 	for (int i = 0;i < enemies.size();i++) {
 		bool enemy_removed = false;
-		enemies[i]->update();
 
-
+		this->enemies[i]->update(center);
 		
 		for (size_t k = 0;k < this->bullets.size() && !enemy_removed;k++) {
 			//Check if enemy hit by bullet

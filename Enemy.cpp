@@ -1,5 +1,5 @@
 #include "Enemy.h"
-
+#include <cmath>
 
 void Enemy::initVariables()
 {
@@ -45,10 +45,26 @@ const int& Enemy::getDamage() const
 	return this->damage;
 }
 
-//Functions
-void Enemy::update()
+
+void Enemy::update(const sf::Vector2f& center)
 {
-	this->shape.move(0.f, this->speed);
+	// Posição atual do inimigo
+    sf::Vector2f currentPosition = this->shape.getPosition();
+    
+    // Calcular a direção para o centro da tela
+    sf::Vector2f direction = center - currentPosition;
+    
+    // Calcular a magnitude da direção
+	//VGA sendo aplicado
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    
+    // Normalizar a direção
+    if (length != 0) {
+        direction /= length;
+    }
+    
+    // Mover o inimigo na direção do centro
+    this->shape.move(direction * speed);
 }
 
 void Enemy::render(sf::RenderTarget* target)

@@ -26,6 +26,6 @@ public:
 	const int& getDamage() const;
 
 	//Functions
-	void update();
+	void update(const sf::Vector2f& center);
 	void render(sf::RenderTarget* target);
 };
