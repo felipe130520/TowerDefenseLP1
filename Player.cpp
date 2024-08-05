@@ -4,7 +4,7 @@
 
 void Player::initVariables()
 {
-	this->movementSpeed = 1.f;
+	this->movementSpeed = 4.f;
 
 	this->attackCooldownMax = 10.f;
 	this->attackCooldown = this->attackCooldownMax;
@@ -30,7 +30,7 @@ void Player::initSprite()
 
 	this->sprite.setTextureRect(rectSourceSprite);
 	//resize the sprite
-	this->sprite.scale(0.2f,0.2f);
+	this->sprite.scale(0.1f,0.1f);
 }
 
 
@@ -92,7 +92,6 @@ void Player::loseHp(const int value)
 
 void Player::move(const float dirX, const float dirY)
 {
-	this->movementSpeed = 14.f;
 
 	this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }

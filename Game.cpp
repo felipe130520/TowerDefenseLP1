@@ -252,7 +252,33 @@ void Game::updateEnemiesAndCombat()
 	this->spawnTimer += 0.5f;
 	if (this->spawnTimer > this->spawnTimerMax) {
 		//spawn em cima da tela
-		this->enemies.push_back(new Enemy(rand()%this->window->getSize().x -25.f, -100.f));
+		
+		float x, y;
+
+    // Escolha um lado aleatório: 0 = cima, 1 = baixo, 2 = esquerda, 3 = direita
+    int side = rand() % 4;
+
+    switch (side) {
+        case 0: // Cima
+            x = static_cast<float>(rand() % this->window->getSize().x);
+            y = -100.f;
+            break;
+        case 1: // Baixo
+            x = static_cast<float>(rand() % this->window->getSize().x);
+            y = static_cast<float>(this->window->getSize().y) + 100.f;
+            break;
+        case 2: // Esquerda
+            x = -100.f;
+            y = static_cast<float>(rand() % this->window->getSize().y);
+            break;
+        case 3: // Direita
+            x = static_cast<float>(this->window->getSize().x) + 100.f;
+            y = static_cast<float>(rand() % this->window->getSize().y);
+            break;
+   		}
+
+    	this->enemies.push_back(new Enemy(x, y));
+			
 		this->spawnTimer = 0.f;
 	}
 
@@ -284,16 +310,9 @@ void Game::updateEnemiesAndCombat()
 		}
 		//Remove enemy at the bottom of the screen
 		if (enemy_removed == false) {
-			if (this->enemies[i]->getBounds().top > this->window->getSize().y) {
-
-				this->player->loseHp(this->enemies.at(i)->getDamage());
-
-				this->enemies.erase(this->enemies.begin() + i);
-				enemy_removed = true;
-				//std::cout << this->enemies.size() << "\n";
-			}
+			
 			//Enemy-player collision
-			else if (this->enemies[i]->getBounds().intersects(this->player->getBounds())) {
+			if (this->enemies[i]->getBounds().intersects(this->player->getBounds())) {
 				this->player->loseHp(this->enemies.at(i)->getDamage());
 				this->enemies.erase(this->enemies.begin() + i);
 				enemy_removed = true;
