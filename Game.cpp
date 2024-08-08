@@ -151,16 +151,32 @@ void Game::updatePollEvents()
 void Game::updateInput()
 {
 	//Move player
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+
+	this->player->animationState = PLAYER_ANIMATION_STATES::IDLE;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))//LEFT 
+	{
 		this->player->move(-1.f, 0.f);
-	}if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+		this->player->animationState = PLAYER_ANIMATION_STATES::MOVING_LEFT;
+	}	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))//RIGHT 
+	{
 		this->player->move(1.f, 0.f);
+		this->player->animationState = PLAYER_ANIMATION_STATES::MOVING_RIGHT;
 
-	}if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))//UP 
+	{
 		this->player->move(0.f, -1.f);
+		this->player->animationState = PLAYER_ANIMATION_STATES::MOVING_UP;
 
-	}if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))//DOWN 
+	{
 		this->player->move(0.f, 1.f);
+		this->player->animationState = PLAYER_ANIMATION_STATES::MOVING_DOWN;
+
 
 	}
 	//Detect key pressed for shooting && shooting at mouse position

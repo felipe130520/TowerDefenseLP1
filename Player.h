@@ -4,15 +4,22 @@
 #include<SFML/Window.hpp>
 #include<iostream>
 #include<vector>
+
+enum PLAYER_ANIMATION_STATES{IDLE=0,MOVING_LEFT=1,MOVING_RIGHT=2,MOVING_UP=3,MOVING_DOWN=4};
+
 class Player
 {
 private:
     sf::Vector2f position;
     sf::FloatRect bounds;
-	
+
 	sf::Sprite sprite;
 	sf::Texture texture;
 	
+	//Animation
+	sf::IntRect currentFrame;
+	sf::Clock animationTimer;
+
 	float movementSpeed;
 
 	float attackCooldown;
@@ -27,10 +34,13 @@ private:
 	void initVariables();
 	void initTexture();
 	void initSprite();
-	
+	void initAnimations();
+
 public:
 	Player();
 	virtual ~Player();
+	short animationState;
+	
 
 	//Accessor
 	const sf::Vector2f& getPos() const;
@@ -49,6 +59,7 @@ public:
 	const bool canAttack();
 
 	void update();
+	void updateAnimations();
 	void updateAttack();
 	void render(sf::RenderTarget& target);
 };
