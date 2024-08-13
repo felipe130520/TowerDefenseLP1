@@ -70,13 +70,21 @@ void Game::initMusic()
 	music.play();
 }
 
+void Game::initBase()
+{
+	sf::Vector2f center(this->window->getSize().x / 2.f - 30.f, this->window->getSize().y / 2.f - 30.f);
+
+	this->base = new Base(center);
+}
+
 void Game::initPlayer()
 {
 	this->spawnTimer = this->spawnTimerMax;
-	this-> spawnTimerMax = 20.f;
+	this->spawnTimerMax = 20.f;
 	this->player = new Player();
 
 }
+
 
 void Game::initEnemies()
 {
@@ -93,6 +101,7 @@ Game::Game()
 	this->initBackground();
 	this->initMusic();
 	this->initSystems();
+	this->initBase();
 	this->initPlayer();
 	this->initEnemies();
 }
@@ -101,6 +110,7 @@ Game::~Game()
 {
 	delete this->window;
 	delete this->player;
+	delete this->base;
 
 	//Delete textures
 	for (auto& i : this->textures) {
@@ -267,31 +277,30 @@ void Game::updateEnemiesAndCombat()
 {
 	this->spawnTimer += 0.5f;
 	if (this->spawnTimer > this->spawnTimerMax) {
-		//spawn em cima da tela
 		
 		float x, y;
 
     // Escolha um lado aleatório: 0 = cima, 1 = baixo, 2 = esquerda, 3 = direita
-    int side = rand() % 4;
+    	int side = rand() % 4;
 
-    switch (side) {
-        case 0: // Cima
-            x = static_cast<float>(rand() % this->window->getSize().x);
-            y = -100.f;
-            break;
-        case 1: // Baixo
-            x = static_cast<float>(rand() % this->window->getSize().x);
-            y = static_cast<float>(this->window->getSize().y) + 100.f;
-            break;
-        case 2: // Esquerda
-            x = -100.f;
-            y = static_cast<float>(rand() % this->window->getSize().y);
-            break;
-        case 3: // Direita
-            x = static_cast<float>(this->window->getSize().x) + 100.f;
-            y = static_cast<float>(rand() % this->window->getSize().y);
-            break;
-   		}
+    	switch (side) {
+        	case 0: // Cima
+            	x = static_cast<float>(rand() % this->window->getSize().x);
+           		y = -100.f;
+            	break;
+        	case 1: // Baixo
+            	x = static_cast<float>(rand() % this->window->getSize().x);
+            	y = static_cast<float>(this->window->getSize().y) + 100.f;
+            	break;
+        	case 2: // Esquerda
+            	x = -100.f;
+            	y = static_cast<float>(rand() % this->window->getSize().y);
+            	break;
+        	case 3: // Direita
+            	x = static_cast<float>(this->window->getSize().x) + 100.f;
+            	y = static_cast<float>(rand() % this->window->getSize().y);
+            	break;
+   			}
 
     	this->enemies.push_back(new Enemy(x, y));
 			
@@ -379,6 +388,8 @@ void Game::render()
 	this->renderBackground();
 
 	//Draw stuff
+
+	this->base->render(this->window);
 
 	this->player->render(*this->window);
 

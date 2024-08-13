@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Base.h"
 #include <cmath>
 #include<string>
 #include<sstream>
@@ -34,6 +35,9 @@ private:
 	unsigned points;
 	sf::Music music;
 	
+	//Base
+	Base* base;
+	
 	//Player
 	Player* player;
 
@@ -58,6 +62,7 @@ private:
 	void initSystems();
 	void initMusic();
 	
+	void initBase();
 	void initPlayer();
 	void initEnemies();
 public:
