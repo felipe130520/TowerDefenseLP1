@@ -25,6 +25,7 @@ private:
 	float attackCooldown;
 	float attackCooldownMax;
 
+	int ammo;
 	int hp;
 	int hpMax;
 
@@ -47,12 +48,15 @@ public:
 	const sf::FloatRect getBounds() const;
 	const int& getHp() const;
 	const int& getHpMax() const;
+	const int& getAmmo() const;
 
 	//Modifiers
 	void setPosition(const sf::Vector2f pos);
 	void setPosition(const float x, const float y);
 	void setHp(const int hp);
 	void loseHp(const int value);
+	void gainAmmo(const int value);
+	void loseammo(const int value);
 
 	//Functions
 	void move(const float dirX, const float dirY);

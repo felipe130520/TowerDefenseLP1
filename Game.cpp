@@ -134,7 +134,7 @@ void Game::run()
 	{
 		this->updatePollEvents();
 
-		if (this->player->getHp() > 0) {
+		if (this->player->getHp() > 0 && this->base->getHp() > 0) {
 			this->update();
 
 			this->render();
@@ -189,6 +189,8 @@ void Game::updateInput()
 
 
 	}
+
+
 	//Detect key pressed for shooting && shooting at mouse position
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && this->player->canAttack()) {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
@@ -196,14 +198,15 @@ void Game::updateInput()
     sf::Vector2f direction = sf::Vector2f(mousePosition.x, mousePosition.y) - playerPosition;
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-    if (length != 0) {
-        direction /= length;
+        if (length != 0 && this->player->getAmmo() > 0) {
+            direction /= length;
 
-        this->bullets.push_back(new Bullet(this->textures["BULLET"],
-            this->player->getPos().x + this->player->getBounds().width / 2.f,
-            this->player->getPos().y,
-            direction.x, direction.y, 10.f));
-    	}
+            this->bullets.push_back(new Bullet(this->textures["BULLET"],
+                this->player->getPos().x + this->player->getBounds().width / 2.f,
+                this->player->getPos().y,
+                direction.x, direction.y, 10.f));
+            this->player->loseammo(1);
+            }
 	}
 }
 
@@ -211,7 +214,7 @@ void Game::updateGUI()
 {
 	std::stringstream ss;
 
-	ss <<"Points: " << this->points;
+	ss <<"Ammo: " << this->player->getAmmo();
 
 
 	this->pointText.setString(ss.str());
@@ -329,23 +332,42 @@ void Game::updateEnemiesAndCombat()
 				//Adding points based on the enemy value
 				this->points += this->enemies[i]->getPoints();
 
+                //chance de criar munição
+                if((rand() % 100) <= 24){
+                    this->Ammos.push_back(new Ammo(this->enemies[i]->getPosition()));
+
+                }
+
 				this->enemies.erase(this->enemies.begin() + i);
 				enemy_removed = true;
 			}
 		}
-		//Remove enemy at the bottom of the screen
-		if (enemy_removed == false) {
+
+		if (!enemy_removed) {
 			
 			//Enemy-player collision
 			if (this->enemies[i]->getBounds().intersects(this->player->getBounds())) {
 				this->player->loseHp(this->enemies.at(i)->getDamage());
+                if((rand() % 100) <= 24){
+                    this->Ammos.push_back(new Ammo(this->enemies[i]->getPosition()));
+
+                }
 				this->enemies.erase(this->enemies.begin() + i);
 				enemy_removed = true;
 			}
 		}
+        //colisão inimigos com a base
+        if(!enemy_removed){
+            if (this->enemies[i]->getBounds().intersects(this->base->getBounds())) {
+            this->base->loseHp(this->enemies[i]->getDamage());
+            this->enemies.erase(this->enemies.begin() + i);  
+            enemy_removed = true;
+          }
+        }
 	
 	}
 }
+
 
 void Game::update()
 {
@@ -400,6 +422,9 @@ void Game::render()
 	for (auto* enemy : this->enemies) {
 		enemy->render(this->window);
 	}
+    for (auto* ammo : this->Ammos) {
+		ammo->render(this->window);
+	}
 
 	this->renderGUI();
 	
@@ -407,6 +432,10 @@ void Game::render()
 	if (this->player->getHp() <= 0) {
 		this->window->draw(this->gameOverText);
 	}
+
+    if(this->base->getHp() <= 0) {
+        this->window->draw(this->gameOverText);
+    }
 
 	//Display stuff
 	this->window->display();

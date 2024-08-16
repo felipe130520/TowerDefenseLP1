@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Base.h"
+#include "Ammo.h"
 #include <cmath>
 #include<string>
 #include<sstream>
@@ -51,7 +52,7 @@ private:
 	float spawnTimerMax;
 	std::vector<Enemy*> enemies;
 
-
+	std::vector<Ammo*> Ammos;
 	
 
 	//Private functions

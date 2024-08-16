@@ -45,6 +45,11 @@ const int& Enemy::getDamage() const
 	return this->damage;
 }
 
+sf::Vector2f Enemy::getPosition() const
+{
+    return this->shape.getPosition();
+}
+
 
 void Enemy::update(const sf::Vector2f& center)
 {

@@ -3,24 +3,20 @@
 #include <SFML/Graphics.hpp>
 
 
-class Base
+class Ammo
 {
 private:
+
+    int ammountOfBullets;
     sf::RectangleShape shape;
-    int hp;
-    int hpMax;
+    
     void initVariables();
     void initShape(const sf::Vector2f& position);
 public:
-    Base(const sf::Vector2f& position);
-    virtual ~Base();
+    Ammo(const sf::Vector2f& position);
+    virtual ~Ammo();
     const sf::FloatRect getBounds() const;
-
-    const int& getHp() const;
-
-    void loseHp(int value);
 
     void update();
     void render(sf::RenderTarget* target);
 };
-

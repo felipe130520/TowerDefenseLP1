@@ -15,6 +15,8 @@ void Player::initVariables()
 	
 	this->hpMax = 100;
 	this->hp = this->hpMax;
+
+	this->ammo = 10;
 }
 
 void Player::initTexture()
@@ -48,8 +50,8 @@ Player::Player()
 
 	this->initVariables();
 	this-> initTexture();
-	 this->initSprite();
-	 this->initAnimations();
+	this->initSprite();
+	this->initAnimations();
 }
 
 Player::~Player()
@@ -76,6 +78,11 @@ const int& Player::getHpMax() const
 	return this->hpMax;
 }
 
+const int& Player::getAmmo() const
+{
+	return this->ammo;
+}
+
 void Player::setPosition(const sf::Vector2f pos)
 {
 	this->sprite.setPosition(pos);
@@ -99,6 +106,15 @@ void Player::loseHp(const int value)
 	}
 }
 
+void Player::gainAmmo(const int value)
+{
+	this->ammo += value;
+}
+
+void Player::loseammo(const int value)
+{
+	this->ammo -= value;
+}
 
 
 void Player::move(const float dirX, const float dirY)

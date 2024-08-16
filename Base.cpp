@@ -31,6 +31,19 @@ const sf::FloatRect Base::getBounds() const
     return this->shape.getGlobalBounds();
 }
 
+const int& Base::getHp() const
+{
+    return this->hp;
+} 
+
+void Base::loseHp(int value){
+    this->hp -= value;
+
+    if(this->hp < 0){
+        this->hp = 0;
+    }
+}
+
 void Base::update()
 {
 

@@ -24,6 +24,7 @@ public:
 	const sf::FloatRect getBounds() const;
 	const int& getPoints() const;
 	const int& getDamage() const;
+	sf::Vector2f getPosition() const;
 
 	//Functions
 	void update(const sf::Vector2f& center);
