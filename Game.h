@@ -81,6 +81,7 @@ public:
 	void updateCollision();
 	void updateBullets();
 	void updateEnemiesAndCombat();
+	void updateAmmoCollection();
 	void update();
 	void renderGUI();
 	void renderBackground();

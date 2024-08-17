@@ -368,6 +368,15 @@ void Game::updateEnemiesAndCombat()
 	}
 }
 
+void Game::updateAmmoCollection(){
+	for(int i = 0; i < Ammos.size(); i++){
+		if(this->Ammos[i]->getBounds().intersects(this->player->getBounds())) {
+			this->player->gainAmmo(5);
+			this->Ammos.erase(this->Ammos.begin() + i);
+		}
+	}
+}
+
 
 void Game::update()
 {
@@ -385,6 +394,8 @@ void Game::update()
 	this->updateGUI();
 
 	this->updateWorld();
+
+	this->updateAmmoCollection();
 }
 
 void Game::renderGUI()
