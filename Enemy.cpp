@@ -1,15 +1,18 @@
 #include "Enemy.h"
 #include <cmath>
+#include <iostream>
 
 void Enemy::initVariables()
 {
 	this->pointCount = rand() % 2 + 3; 
 	 this->type = 0;
-	 this->speed = static_cast<float>(this->pointCount) / 3;
+	 this->speed = static_cast<float>(this->pointCount) / 6;
 	 this->hpMax=static_cast<int>(this->pointCount);
 	 this->hp= this->hpMax;
 	 this->damage= this->pointCount;
 	 this->points= this->pointCount;
+	 this->attackCooldownMax = 100.f;
+	 this->attackCooldown = 0.f;
 }
 void Enemy::initShape()
 {
@@ -51,6 +54,18 @@ sf::Vector2f Enemy::getPosition() const
 }
 
 
+const bool Enemy::canAttack()
+{
+	if (this->attackCooldown >= this->attackCooldownMax) {
+
+		this->attackCooldown = 0.f;
+		return true;
+	}
+	return false;
+}
+
+
+
 void Enemy::update(const sf::Vector2f& center)
 {
 	// Posição atual do inimigo
@@ -70,6 +85,16 @@ void Enemy::update(const sf::Vector2f& center)
     
     // Mover o inimigo na direção do centro
     this->shape.move(direction * speed);
+
+	updateAttack();
+
+}
+
+void Enemy::updateAttack()
+{
+	if (this->attackCooldown < this->attackCooldownMax) {
+		this->attackCooldown += 0.5f;
+	}
 }
 
 void Enemy::render(sf::RenderTarget* target)

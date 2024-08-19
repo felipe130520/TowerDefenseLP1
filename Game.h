@@ -6,10 +6,11 @@
 #include "Enemy.h"
 #include "Base.h"
 #include "Ammo.h"
+#include "EnemyBullet.h"
 #include <cmath>
 #include<string>
 #include<sstream>
-
+#include <iostream>
 #include <SFML/Audio.hpp>
 
 class Game
@@ -53,7 +54,8 @@ private:
 	std::vector<Enemy*> enemies;
 
 	std::vector<Ammo*> Ammos;
-	
+
+	std::vector<EnemyBullet*> enemyBullets; 
 
 	//Private functions
 	void initWindow();
@@ -80,6 +82,7 @@ public:
 	void updateWorld();
 	void updateCollision();
 	void updateBullets();
+	void updateEnemieBullets();
 	void updateEnemiesAndCombat();
 	void updateAmmoCollection();
 	void update();

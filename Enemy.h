@@ -1,7 +1,7 @@
 #pragma once
-
+#include "EnemyBullet.h"
 #include<SFML/Graphics.hpp>
-
+#include <vector>
 class Enemy
 {
 private:
@@ -14,6 +14,10 @@ private:
 	int damage;
 	int points;
 
+
+	float attackCooldown;
+	float attackCooldownMax;
+
 	void initVariables();
 	void initShape();
 public:
@@ -25,8 +29,10 @@ public:
 	const int& getPoints() const;
 	const int& getDamage() const;
 	sf::Vector2f getPosition() const;
+	const bool canAttack();
 
 	//Functions
 	void update(const sf::Vector2f& center);
+	void updateAttack();
 	void render(sf::RenderTarget* target);
 };

@@ -80,7 +80,7 @@ void Game::initBase()
 void Game::initPlayer()
 {
 	this->spawnTimer = this->spawnTimerMax;
-	this->spawnTimerMax = 20.f;
+	this->spawnTimerMax = 100.f;
 	this->player = new Player();
 
 }
@@ -276,6 +276,32 @@ void Game::updateBullets()
 	}
 }
 
+void Game::updateEnemieBullets(){
+
+	for(int i = 0; i < this->enemyBullets.size(); i++){
+		this->enemyBullets[i]->update();
+
+		if(this->enemyBullets[i]->getBounds().intersects(this->player->getBounds())){
+			this->player->loseHp(50);
+			this->enemyBullets.erase(this->enemyBullets.begin() + i);
+		}
+
+		if(this->enemyBullets[i]->getBounds().intersects(this->base->getBounds())){
+			this->base->loseHp(50);
+			this->enemyBullets.erase(this->enemyBullets.begin() + i);
+		}
+	}
+
+	for(int i = 0; i < this->enemies.size(); i++){
+
+		if(this->enemies[i]->canAttack()){
+
+			this->enemyBullets.push_back(new EnemyBullet(this->enemies[i]->getPosition(), this->player->getPos()));
+		}
+	}
+
+}
+
 void Game::updateEnemiesAndCombat()
 {
 	this->spawnTimer += 0.5f;
@@ -389,6 +415,8 @@ void Game::update()
 	
 	this->updateBullets();
 
+	this->updateEnemieBullets();
+
 	this->updateEnemiesAndCombat();
 
 	this->updateGUI();
@@ -435,6 +463,9 @@ void Game::render()
 	}
     for (auto* ammo : this->Ammos) {
 		ammo->render(this->window);
+	}
+	for(auto* enemyBullet : this->enemyBullets) {
+		enemyBullet->render(this->window);
 	}
 
 	this->renderGUI();
