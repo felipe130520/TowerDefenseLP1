@@ -34,6 +34,17 @@ void Game::initGUI()
 	this->ammoText.setFillColor(sf::Color::Black);
 	this->ammoText.setPosition(sf::Vector2(675.f, 40.f));
 
+	//init playerHp text
+	this->playerHpText.setFont(this->font);
+	this->playerHpText.setCharacterSize(24);
+	this->playerHpText.setFillColor(sf::Color::Black);
+	this->playerHpText.setPosition(this->playerHpBar.getPosition().x + 230.f, this->playerHpBar.getPosition().y + 25.f);
+
+	this->baseHpText.setFont(this->font);
+	this->baseHpText.setCharacterSize(24);
+	this->baseHpText.setFillColor(sf::Color::Black);
+	this->baseHpText.setPosition(this->baseHpBar.getPosition().x + 230.f, this->baseHpBar.getPosition().y + 60.f);
+
     // Init Game Over text
     this->gameOverText.setFont(this->font);
     this->gameOverText.setCharacterSize(60);
@@ -234,12 +245,18 @@ void Game::updateGUI()
 {
 	std::stringstream GUIpoints;
 	std::stringstream GUIammo;
+	std::stringstream GUIplayerHpText;
+	std::stringstream GUIbaseHpText;
 
 	GUIpoints <<"Points: " << this->points;
 	GUIammo << "Ammo: " << this->player->getAmmo();
+	GUIplayerHpText << "Player Hp";
+	GUIbaseHpText << "Base Hp";
 
 	this->pointText.setString(GUIpoints.str());
 	this->ammoText.setString(GUIammo.str());
+	this->playerHpText.setString(GUIplayerHpText.str());
+	this->baseHpText.setString(GUIbaseHpText.str());
 
 	
 	//update player GUI
@@ -459,12 +476,20 @@ void Game::update()
 
 void Game::renderGUI()
 {
+	//text
 	this->window->draw(this->pointText);
 	this->window->draw(this->ammoText);
+	this->window->draw(this->playerHpText);
+	this->window->draw(this->baseHpText);
+	
+	//hp bar
 	this->window->draw(this->playerHpBarBack);
 	this->window->draw(this->playerHpBar);
 	this->window->draw(this->baseHpBarBack);
 	this->window->draw(this->baseHpBar);
+
+	
+	
 }
 
 

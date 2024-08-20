@@ -27,8 +27,8 @@ private:
 	sf::Font font;
 	sf::Text pointText;
 	sf::Text ammoText;
-	sf::Text playerHp;
-	sf::Text baseHp;
+	sf::Text playerHpText;
+	sf::Text baseHpText;
 
 	sf::Text gameOverText;
 
