@@ -278,20 +278,25 @@ void Game::updateBullets()
 
 void Game::updateEnemieBullets(){
 
-	for(int i = 0; i < this->enemyBullets.size(); i++){
-		this->enemyBullets[i]->update();
+	for(size_t i = 0; i < this->enemyBullets.size(); i++){
 
+
+		this->enemyBullets[i]->update();
+		bool erased=false;
+		
 		if(this->enemyBullets[i]->getBounds().intersects(this->player->getBounds())){
-			this->player->loseHp(50);
+			this->player->loseHp(20);
 			this->enemyBullets.erase(this->enemyBullets.begin() + i);
+			erased = true;
 		}
 
-		if(this->enemyBullets[i]->getBounds().intersects(this->base->getBounds())){
-			this->base->loseHp(50);
+		if(erased == false && this->enemyBullets[i]->getBounds().intersects(this->base->getBounds())){
+			this->base->loseHp(20);
 			this->enemyBullets.erase(this->enemyBullets.begin() + i);
 		}
 	}
 
+	//Faz o inimigo atirar
 	for(int i = 0; i < this->enemies.size(); i++){
 
 		if(this->enemies[i]->canAttack()){
@@ -350,6 +355,7 @@ void Game::updateEnemiesAndCombat()
 		this->enemies[i]->update(center);
 		
 		for (size_t k = 0;k < this->bullets.size() && !enemy_removed;k++) {
+
 			//Check if enemy hit by bullet
 			if (this->bullets[k]->getBounds().intersects(this->enemies[i]->getBounds())) {
 
