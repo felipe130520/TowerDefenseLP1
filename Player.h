@@ -38,7 +38,7 @@ private:
 	void initAnimations();
 
 public:
-	Player();
+	Player(sf::Vector2f center);
 	virtual ~Player();
 	short animationState;
 	

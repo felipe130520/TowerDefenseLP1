@@ -36,6 +36,11 @@ const int& Base::getHp() const
     return this->hp;
 } 
 
+const int& Base::getHpMax() const
+{
+    return this->hpMax;
+}
+
 void Base::loseHp(int value){
     this->hp -= value;
 

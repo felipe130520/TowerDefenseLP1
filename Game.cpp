@@ -17,32 +17,49 @@ void Game::initTextures()
 
 void Game::initGUI()
 {
-	//Load font
-	if (!this->font.loadFromFile("Fonts/Honk_Regular.ttf")) {
-		std::cout << "ERROR GAME FAILED TO LOAD FONT";
-	}
-	//Init point text
-	
-	this->pointText.setFont(this->font);
-	this->pointText.setCharacterSize(24);
-	this->pointText.setFillColor(sf::Color::Black);
-	this->pointText.setPosition(sf::Vector2f(675.f, 15.f));
-		
+    // Load font
+    if (!this->font.loadFromFile("Fonts/Honk_Regular.ttf")) {
+        std::cout << "ERROR GAME FAILED TO LOAD FONT";
+    }
+
+    // Init point text
+    this->pointText.setFont(this->font);
+    this->pointText.setCharacterSize(24);
+    this->pointText.setFillColor(sf::Color::Black);
+    this->pointText.setPosition(sf::Vector2f(675.f, 15.f));
+
+	//init ammo text
+	this->ammoText.setFont(this->font);
+	this->ammoText.setCharacterSize(24);
+	this->ammoText.setFillColor(sf::Color::Black);
+	this->ammoText.setPosition(sf::Vector2(675.f, 40.f));
+
+    // Init Game Over text
     this->gameOverText.setFont(this->font);
-	this->gameOverText.setCharacterSize(60);
-	this->gameOverText.setFillColor(sf::Color::Red);
-	this->gameOverText.setString("Game Over!");
-	this->gameOverText.setPosition(sf::Vector2f((this->window->getSize().x / 2.f)- this->gameOverText.getGlobalBounds().width/2.f,
-		(this->window->getSize().y / 2.f) - this->gameOverText.getGlobalBounds().height / 2.f));
+    this->gameOverText.setCharacterSize(60);
+    this->gameOverText.setFillColor(sf::Color::Red);
+    this->gameOverText.setString("Game Over!");
+    this->gameOverText.setPosition(sf::Vector2f((this->window->getSize().x / 2.f) - this->gameOverText.getGlobalBounds().width / 2.f,
+                                                (this->window->getSize().y / 2.f) - this->gameOverText.getGlobalBounds().height / 2.f));
 
-	//Init player GUI
-
-	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f));
+    // Init player GUI
+    this->playerHpBar.setSize(sf::Vector2f(200.f, 25.f));
 	this->playerHpBar.setFillColor(sf::Color::Green);
+	this->playerHpBar.setPosition(25.f, 25.f);
 
 	this->playerHpBarBack = this->playerHpBar;
 	this->playerHpBarBack.setFillColor(sf::Color::Red);
-	
+
+
+    // Init base GUI
+    this->baseHpBar.setSize(sf::Vector2f(200.f, 25.f));
+    this->baseHpBar.setFillColor(sf::Color::Blue); 
+    this->baseHpBar.setPosition(sf::Vector2f(25.f, 65.f)); 
+
+ 
+    this->baseHpBarBack = this->baseHpBar;
+    this->baseHpBarBack.setFillColor(sf::Color::Red);
+
 }
 
 void Game::initBackground()
@@ -81,7 +98,10 @@ void Game::initPlayer()
 {
 	this->spawnTimer = this->spawnTimerMax;
 	this->spawnTimerMax = 100.f;
-	this->player = new Player();
+
+	sf::Vector2f center(this->window->getSize().x / 2.f, this->window->getSize().y / 2.f);
+
+	this->player = new Player(center);
 
 }
 
@@ -212,18 +232,23 @@ void Game::updateInput()
 
 void Game::updateGUI()
 {
-	std::stringstream ss;
+	std::stringstream GUIpoints;
+	std::stringstream GUIammo;
 
-	ss <<"Ammo: " << this->player->getAmmo();
+	GUIpoints <<"Points: " << this->points;
+	GUIammo << "Ammo: " << this->player->getAmmo();
 
-
-	this->pointText.setString(ss.str());
+	this->pointText.setString(GUIpoints.str());
+	this->ammoText.setString(GUIammo.str());
 
 	
 	//update player GUI
-	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
-	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent,this->playerHpBar.getSize().y));
+	float playerHpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
+	this->playerHpBar.setSize(sf::Vector2f(200.f * playerHpPercent,this->playerHpBar.getSize().y));
 
+	//update base GUI
+	float baseHpPercent = static_cast<float>(this->base->getHp()) / this->base->getHpMax();
+	this->baseHpBar.setSize(sf::Vector2f(200.f * baseHpPercent, this->baseHpBar.getSize().y));
 }
 
 void Game::updateWorld()
@@ -435,8 +460,11 @@ void Game::update()
 void Game::renderGUI()
 {
 	this->window->draw(this->pointText);
+	this->window->draw(this->ammoText);
 	this->window->draw(this->playerHpBarBack);
 	this->window->draw(this->playerHpBar);
+	this->window->draw(this->baseHpBarBack);
+	this->window->draw(this->baseHpBar);
 }
 
 

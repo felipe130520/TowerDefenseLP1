@@ -26,6 +26,9 @@ private:
 	//GUI
 	sf::Font font;
 	sf::Text pointText;
+	sf::Text ammoText;
+	sf::Text playerHp;
+	sf::Text baseHp;
 
 	sf::Text gameOverText;
 
@@ -46,6 +49,10 @@ private:
 	//Player GUI
 	sf::RectangleShape playerHpBar;
 	sf::RectangleShape playerHpBarBack;
+
+	//Base GUI
+	sf::RectangleShape baseHpBar;
+	sf::RectangleShape baseHpBarBack;
 
 
 	//Enemies

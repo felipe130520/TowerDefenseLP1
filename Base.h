@@ -17,6 +17,7 @@ public:
     const sf::FloatRect getBounds() const;
 
     const int& getHp() const;
+    const int& getHpMax() const;
 
     void loseHp(int value);
 

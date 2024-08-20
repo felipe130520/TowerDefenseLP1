@@ -45,13 +45,14 @@ void Player::initAnimations()
 }
 
 
-Player::Player()
+Player::Player(sf::Vector2f center)
 {
 
 	this->initVariables();
 	this-> initTexture();
 	this->initSprite();
 	this->initAnimations();
+	this->setPosition(center);
 }
 
 Player::~Player()
