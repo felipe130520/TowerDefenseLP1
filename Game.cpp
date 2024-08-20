@@ -159,21 +159,31 @@ Game::~Game()
 
 //Functions
 
-void Game::run()
-{
-	while (window->isOpen())
-	{
-		this->updatePollEvents();
+void Game::run(){
+	this->pausado = false;
 
-		if (this->player->getHp() > 0 && this->base->getHp() > 0) {
-			this->update();
+    while (window->isOpen())
+    {
+        this->updatePollEvents();
 
-			this->render();
-		}
-		else {
-			this->music.stop();
-		}
-	}
+        if (this->player->getHp() > 0 && this->base->getHp() > 0)
+        {
+            if (!this->pausado)
+            {
+                this->update();
+            }
+
+            this->render();
+        }
+        else
+        {
+            this->music.stop();
+        }
+    }
+}
+
+void Game::togglePausado(){
+	this->pausado = !this->pausado;
 }
 
 void Game::updatePollEvents()
@@ -186,6 +196,9 @@ void Game::updatePollEvents()
 		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
             this->window->close();
 		}
+		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::P) {
+            this->togglePausado();
+        }
 	}
 }
 

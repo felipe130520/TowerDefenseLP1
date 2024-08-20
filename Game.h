@@ -64,6 +64,9 @@ private:
 
 	std::vector<EnemyBullet*> enemyBullets; 
 
+	//Pausar
+	bool pausado;
+	
 	//Private functions
 	void initWindow();
 	void initTextures();
@@ -83,6 +86,7 @@ public:
 	void run();
 
 
+	void togglePausado();
 	void updatePollEvents();
 	void updateInput();
 	void updateGUI();
