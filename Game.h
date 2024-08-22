@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
 #include<map>
 
 #include "Player.h"
@@ -31,7 +32,7 @@ private:
 	sf::Text baseHpText;
 
 	sf::Text gameOverText;
-
+	sf::Text YouWinText;
 	//Background
 	sf::Texture BackgroundTexture;
 	sf::Sprite Background;
@@ -66,6 +67,11 @@ private:
 
 	//Pausar
 	bool pausado;
+	
+	//Aumento de dificuldade
+	bool firstDifIncrease;
+	bool secondDifIncrease;
+	bool thirdDifIncrease;
 	
 	//Private functions
 	void initWindow();
@@ -102,5 +108,8 @@ public:
 	void render();
 
 	void restartGame();
+	void updateGameDificulty();
 
 };
+
+#endif

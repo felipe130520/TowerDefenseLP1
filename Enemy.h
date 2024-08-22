@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ENEMY_H
+#define ENEMY_H
+
 #include "EnemyBullet.h"
 #include<SFML/Graphics.hpp>
 #include <vector>
@@ -36,3 +38,5 @@ public:
 	void updateAttack();
 	void render(sf::RenderTarget* target);
 };
+
+#endif

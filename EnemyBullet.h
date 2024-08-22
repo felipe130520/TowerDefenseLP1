@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ENEMYBULLET_H
+#define ENEMYBULLET_H
 
 #include<SFML/Graphics.hpp>
 #include <iostream>
@@ -21,3 +22,5 @@ public:
 	void update();
 	void render(sf::RenderTarget* target);
 };
+
+#endif

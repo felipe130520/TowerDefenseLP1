@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BULLET_H
+#define BULLET_H
 
 #include<SFML/Graphics.hpp>
 #include <iostream>
@@ -22,3 +23,5 @@ public:
 	void update();
 	void render(sf::RenderTarget* target);
 };
+
+#endif

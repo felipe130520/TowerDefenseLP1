@@ -53,6 +53,15 @@ void Game::initGUI()
     this->gameOverText.setPosition(sf::Vector2f((this->window->getSize().x / 2.f) - this->gameOverText.getGlobalBounds().width / 2.f,
                                                 (this->window->getSize().y / 2.f) - this->gameOverText.getGlobalBounds().height / 2.f));
 
+	//init You Win text
+	this->YouWinText.setFont(this->font);
+    this->YouWinText.setCharacterSize(60);
+    this->YouWinText.setFillColor(sf::Color::Green);
+    this->YouWinText.setString("You Win!");
+    this->YouWinText.setPosition(sf::Vector2f((this->window->getSize().x / 2.f) - this->YouWinText.getGlobalBounds().width / 2.f,
+                                                (this->window->getSize().y / 2.f) - this->YouWinText.getGlobalBounds().height / 2.f));
+
+
     // Init player GUI
     this->playerHpBar.setSize(sf::Vector2f(200.f, 25.f));
 	this->playerHpBar.setFillColor(sf::Color::Green);
@@ -109,6 +118,9 @@ void Game::initPlayer()
 {
 	this->spawnTimer = this->spawnTimerMax;
 	this->spawnTimerMax = 100.f;
+	this->firstDifIncrease = false;
+	this->secondDifIncrease = false;
+	this->thirdDifIncrease = false;
 
 	sf::Vector2f center(this->window->getSize().x / 2.f, this->window->getSize().y / 2.f);
 
@@ -166,7 +178,7 @@ void Game::run(){
     {
         this->updatePollEvents();
 
-        if (this->player->getHp() > 0 && this->base->getHp() > 0)
+        if (this->player->getHp() > 0 && this->base->getHp() > 0 && this->points < 40)
         {
             if (!this->pausado)
             {
@@ -488,6 +500,8 @@ void Game::update()
 	this->updateWorld();
 
 	this->updateAmmoCollection();
+
+	this->updateGameDificulty();
 }
 
 void Game::renderGUI()
@@ -553,7 +567,10 @@ void Game::render()
     if(this->base->getHp() <= 0) {
         this->window->draw(this->gameOverText);
     }
-
+	
+	if(this->points >= 40) {
+		this->window->draw(this->YouWinText);
+	}
 	//Display stuff
 	this->window->display();
 }
@@ -586,4 +603,29 @@ void Game::restartGame() {
 	for(int i = this->Ammos.size() - 1; i >= 0; i--) {
 		this->Ammos.erase(this->Ammos.begin() + i);
 	}
+
+	this->firstDifIncrease = false;
+	this->secondDifIncrease = false;
+	this->thirdDifIncrease = false;
+
+	this->spawnTimerMax = 100.f;
+}
+
+void Game::updateGameDificulty() {
+
+	if(this->points > 10 && !this->firstDifIncrease) {
+		this->spawnTimerMax -= 15.f;
+		this->firstDifIncrease = true;
+	}
+
+	if(this->points > 20 && !this->secondDifIncrease) {
+		this->spawnTimerMax -= 15.f;
+		this->secondDifIncrease = true;
+	}
+
+	if(this->points > 30 && !this->thirdDifIncrease) {
+		this->spawnTimerMax -= 15.f;
+		this->thirdDifIncrease = true;
+	}
+
 }

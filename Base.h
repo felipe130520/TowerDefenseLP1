@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BASE_H
+#define BASE_H
+
 
 #include <SFML/Graphics.hpp>
 
@@ -26,3 +28,4 @@ public:
     void render(sf::RenderTarget* target);
 };
 
+#endif

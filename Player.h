@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include<SFML/Graphics.hpp>
 #include<SFML/Window.hpp>
@@ -68,3 +69,5 @@ public:
 	void updateAttack();
 	void render(sf::RenderTarget& target);
 };
+
+#endif

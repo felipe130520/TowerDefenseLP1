@@ -1,4 +1,5 @@
-#pragma once
+#ifndef AMMO_H
+#define AMMO_H
 
 #include <SFML/Graphics.hpp>
 
@@ -20,3 +21,5 @@ public:
     void update();
     void render(sf::RenderTarget* target);
 };
+
+#endif
