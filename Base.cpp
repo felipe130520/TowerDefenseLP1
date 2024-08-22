@@ -41,12 +41,18 @@ const int& Base::getHpMax() const
     return this->hpMax;
 }
 
-void Base::loseHp(int value){
+void Base::loseHp(int value)
+{
     this->hp -= value;
 
     if(this->hp < 0){
         this->hp = 0;
     }
+}
+
+void Base::setHp(int value)
+{
+    this->hp = value;
 }
 
 void Base::update()

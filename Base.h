@@ -20,6 +20,7 @@ public:
     const int& getHpMax() const;
 
     void loseHp(int value);
+    void setHp(int value);
 
     void update();
     void render(sf::RenderTarget* target);

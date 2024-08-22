@@ -199,6 +199,9 @@ void Game::updatePollEvents()
 		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::P) {
             this->togglePausado();
         }
+		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::R) {
+			this->restartGame();
+		}
 	}
 }
 
@@ -248,7 +251,7 @@ void Game::updateInput()
             this->bullets.push_back(new Bullet(this->textures["BULLET"],
                 this->player->getPos().x + this->player->getBounds().width / 2.f,
                 this->player->getPos().y,
-                direction.x, direction.y, 10.f));
+                direction.x, direction.y, 7.f));
             this->player->loseammo(1);
             }
 	}
@@ -340,13 +343,13 @@ void Game::updateEnemieBullets(){
 		bool erased=false;
 		
 		if(this->enemyBullets[i]->getBounds().intersects(this->player->getBounds())){
-			this->player->loseHp(20);
+			this->player->loseHp(5);
 			this->enemyBullets.erase(this->enemyBullets.begin() + i);
 			erased = true;
 		}
 
 		if(erased == false && this->enemyBullets[i]->getBounds().intersects(this->base->getBounds())){
-			this->base->loseHp(20);
+			this->base->loseHp(5);
 			this->enemyBullets.erase(this->enemyBullets.begin() + i);
 		}
 	}
@@ -553,4 +556,34 @@ void Game::render()
 
 	//Display stuff
 	this->window->display();
+}
+
+void Game::restartGame() {
+
+	// resetar tudo
+	
+	sf::Vector2f center(this->window->getSize().x / 2.f, this->window->getSize().y / 2.f);
+
+	this->player->setPosition(center);
+
+	this->points = 0;
+
+	this->base->setHp(this->base->getHpMax());
+
+	this->player->setHp(this->player->getHpMax());
+
+	this->player->setAmmo(10);
+
+	//deletar objetos (menos player)
+	for(int i = this->enemies.size() - 1; i >= 0; i--) {
+		this->enemies.erase(this->enemies.begin() + i);
+	}
+
+	for(int i = this->enemyBullets.size() - 1; i >= 0; i--) {
+		this->enemyBullets.erase(this->enemyBullets.begin() + i);
+	}
+
+	for(int i = this->Ammos.size() - 1; i >= 0; i--) {
+		this->Ammos.erase(this->Ammos.begin() + i);
+	}
 }

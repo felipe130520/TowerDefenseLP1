@@ -101,4 +101,6 @@ public:
 	void renderBackground();
 	void render();
 
+	void restartGame();
+
 };
