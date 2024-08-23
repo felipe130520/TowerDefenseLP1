@@ -4,9 +4,6 @@
 
 void Player::initVariables()
 {
-	this->animationState = PLAYER_ANIMATION_STATES::IDLE;
-
-	
 
 	this->movementSpeed = 4.f;
 
@@ -23,26 +20,21 @@ void Player::initTexture()
 {
 	
 	//Load texture from file
-	if (!this->texture.loadFromFile("Textures/sprite_sheet.png")) {
+	if (!this->texture.loadFromFile("Textures/cranio.png")) {
 		std::cout << "ERROR::PLAYER::INITTEXTURE::Could not load texture file"<<std::endl;
 	}
 }
 
 void Player::initSprite()
 {
-	this->currentFrame = sf::IntRect ( 0,0,640,426 ); // Frame atual
+
 	//Set the texture to the sprite
 	this->sprite.setTexture(this->texture);
 
-	this->sprite.setTextureRect(this->currentFrame);
 	//resize the sprite
 	this->sprite.scale(0.1f,0.1f);
 }
 
-void Player::initAnimations()	
-{
-	this->animationTimer.restart();
-}
 
 
 Player::Player(sf::Vector2f center)
@@ -51,7 +43,6 @@ Player::Player(sf::Vector2f center)
 	this->initVariables();
 	this-> initTexture();
 	this->initSprite();
-	this->initAnimations();
 	this->setPosition(center);
 }
 
@@ -141,101 +132,10 @@ const bool Player::canAttack()
 void Player::update()
 {
 	this->updateAttack();
-	this->updateAnimations();
+
 }
 
 
-void Player::updateAnimations()
-{
-	if (this->animationState == PLAYER_ANIMATION_STATES::IDLE) {
-
-		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f) {
-
-
-
-			this->currentFrame.top = 852.f;
-			this->currentFrame.left += 640.f;
-			if (this->currentFrame.left >= 3840.f)
-			{
-				this->currentFrame.left = 0;
-			}
-
-			this->animationTimer.restart();
-			this->sprite.setTextureRect(this->currentFrame);
-		}
-	}
-	else if (this->animationState == PLAYER_ANIMATION_STATES::MOVING_RIGHT)
-	{
-		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f) {
-
-
-
-			this->currentFrame.top = 426.f;
-			this->currentFrame.left += 640.f;
-			if (this->currentFrame.left >= 3840.f)
-			{
-				this->currentFrame.left = 0;
-			}
-
-			this->animationTimer.restart();
-			this->sprite.setTextureRect(this->currentFrame);
-		}
-	}
-	else if (this->animationState == PLAYER_ANIMATION_STATES::MOVING_LEFT)
-	{
-		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f) {
-
-
-
-			this->currentFrame.top = 0.f;
-			this->currentFrame.left += 640.f;
-			if (this->currentFrame.left >= 3840.f)
-			{
-				this->currentFrame.left = 0;
-			}
-
-			this->animationTimer.restart();
-			this->sprite.setTextureRect(this->currentFrame);
-		}
-	}
-	else if (this->animationState == PLAYER_ANIMATION_STATES::MOVING_UP)
-	{
-		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f) {
-
-
-
-			this->currentFrame.top = 1278.f;
-			this->currentFrame.left += 640.f;
-			if (this->currentFrame.left >= 3840.f)
-			{
-				this->currentFrame.left = 0;
-			}
-
-			this->animationTimer.restart();
-			this->sprite.setTextureRect(this->currentFrame);
-		}
-	}
-	else if (this->animationState == PLAYER_ANIMATION_STATES::MOVING_DOWN)
-	{
-		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f) {
-
-
-
-			this->currentFrame.top = 1704.f;
-			this->currentFrame.left += 640.f;
-			if (this->currentFrame.left >= 3840.f)
-			{
-				this->currentFrame.left = 0;
-			}
-
-			this->animationTimer.restart();
-			this->sprite.setTextureRect(this->currentFrame);
-		}
-	}
-	else {
-			this->animationTimer.restart();
-	}
-}
 void Player::updateAttack()
 {
 	if (this->attackCooldown < this->attackCooldownMax) {

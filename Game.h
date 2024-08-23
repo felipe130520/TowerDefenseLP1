@@ -75,7 +75,7 @@ private:
 	
 	//Private functions
 	void initWindow();
-	void initTextures();
+
 	void initGUI();
 	void initBackground();
 	void initSystems();

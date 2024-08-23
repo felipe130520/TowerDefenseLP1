@@ -7,13 +7,6 @@ void Game::initWindow()
 	this->window->setVerticalSyncEnabled(false);
 }
 
-void Game::initTextures()
-{
-	this->textures["BULLET"] = new sf::Texture();
-	this->textures["BULLET"]->loadFromFile("Textures/Bullet.png");
-
-
-}
 
 void Game::initGUI()
 {
@@ -47,19 +40,19 @@ void Game::initGUI()
 
     // Init Game Over text
     this->gameOverText.setFont(this->font);
-    this->gameOverText.setCharacterSize(60);
+    this->gameOverText.setCharacterSize(80);
     this->gameOverText.setFillColor(sf::Color::Red);
     this->gameOverText.setString("Game Over!");
     this->gameOverText.setPosition(sf::Vector2f((this->window->getSize().x / 2.f) - this->gameOverText.getGlobalBounds().width / 2.f,
-                                                (this->window->getSize().y / 2.f) - this->gameOverText.getGlobalBounds().height / 2.f));
+                                                (this->window->getSize().y / 2.f) - this->gameOverText.getGlobalBounds().height / 2.f - 150.f));
 
 	//init You Win text
 	this->YouWinText.setFont(this->font);
-    this->YouWinText.setCharacterSize(60);
+    this->YouWinText.setCharacterSize(80);
     this->YouWinText.setFillColor(sf::Color::Green);
     this->YouWinText.setString("You Win!");
     this->YouWinText.setPosition(sf::Vector2f((this->window->getSize().x / 2.f) - this->YouWinText.getGlobalBounds().width / 2.f,
-                                                (this->window->getSize().y / 2.f) - this->YouWinText.getGlobalBounds().height / 2.f));
+                                                (this->window->getSize().y / 2.f) - this->YouWinText.getGlobalBounds().height / 2.f - 150.f));
 
 
     // Init player GUI
@@ -139,7 +132,7 @@ Game::Game()
 {
 
 	this->initWindow();
-	this->initTextures();
+
 	this->initGUI();
 	this->initBackground();
 	this->initMusic();
@@ -221,32 +214,22 @@ void Game::updateInput()
 {
 	//Move player
 
-	this->player->animationState = PLAYER_ANIMATION_STATES::IDLE;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))//LEFT 
 	{
 		this->player->move(-1.f, 0.f);
-		this->player->animationState = PLAYER_ANIMATION_STATES::MOVING_LEFT;
 	}	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))//RIGHT 
 	{
 		this->player->move(1.f, 0.f);
-		this->player->animationState = PLAYER_ANIMATION_STATES::MOVING_RIGHT;
-
-
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))//UP 
 	{
 		this->player->move(0.f, -1.f);
-		this->player->animationState = PLAYER_ANIMATION_STATES::MOVING_UP;
-
 
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))//DOWN 
 	{
 		this->player->move(0.f, 1.f);
-		this->player->animationState = PLAYER_ANIMATION_STATES::MOVING_DOWN;
-
-
 	}
 
 
@@ -260,7 +243,7 @@ void Game::updateInput()
         if (length != 0 && this->player->getAmmo() > 0) {
             direction /= length;
 
-            this->bullets.push_back(new Bullet(this->textures["BULLET"],
+            this->bullets.push_back(new Bullet(
                 this->player->getPos().x + this->player->getBounds().width / 2.f,
                 this->player->getPos().y,
                 direction.x, direction.y, 7.f));
@@ -541,10 +524,15 @@ void Game::render()
 
 	this->base->render(this->window);
 
-	this->player->render(*this->window);
-
 	for (auto* bullet : this->bullets) {
 		bullet->render(this->window);
+	}
+
+	this->player->render(*this->window);
+
+
+	for(auto* enemyBullet : this->enemyBullets) {
+		enemyBullet->render(this->window);
 	}
 
 	for (auto* enemy : this->enemies) {
@@ -553,9 +541,7 @@ void Game::render()
     for (auto* ammo : this->Ammos) {
 		ammo->render(this->window);
 	}
-	for(auto* enemyBullet : this->enemyBullets) {
-		enemyBullet->render(this->window);
-	}
+	
 
 	this->renderGUI();
 	

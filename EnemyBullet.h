@@ -8,7 +8,8 @@ class EnemyBullet
 {
 private:
 
-	sf::CircleShape shape;
+	sf::Sprite sprite;
+	sf::Texture texture;
     sf::Vector2f direction;
 	float movementSpeed;
 

@@ -14,19 +14,24 @@ void Enemy::initVariables()
 	 this->attackCooldownMax = 100.f;
 	 this->attackCooldown = 0.f;
 }
-void Enemy::initShape()
+/*void Enemy::initShape()
 {
 	this->shape.setRadius(this->pointCount * 5);
 	this->shape.setPointCount(this->pointCount);
 	this->shape.setFillColor(sf::Color(rand()%255 +1, rand()%255 + 1, rand()%255 + 1,255));
-}
+}*/
 
 Enemy::Enemy(float pos_x, float pos_y)
 {
 	this->initVariables();
-	this->initShape();
+	//this->initShape();
+	if(!this->texture.loadFromFile("Textures/enemy.png")) {
+		std::cout << "ERROR::ENEMY::INITTEXTURE::Could not load texture file"<<std::endl;
+	}
 
-	this->shape.setPosition(pos_x, pos_y);
+	this->sprite.setTexture(this->texture);
+	this->sprite.setPosition(pos_x, pos_y);
+	this->sprite.setScale(0.1f, 0.1f);
 }
 
 Enemy::~Enemy()
@@ -35,7 +40,7 @@ Enemy::~Enemy()
 
 const sf::FloatRect Enemy::getBounds() const
 {
-	return this->shape.getGlobalBounds();
+	return this->sprite.getGlobalBounds();
 }
 
 const int& Enemy::getPoints() const
@@ -50,7 +55,7 @@ const int& Enemy::getDamage() const
 
 sf::Vector2f Enemy::getPosition() const
 {
-    return this->shape.getPosition();
+    return this->sprite.getPosition();
 }
 
 
@@ -69,7 +74,7 @@ const bool Enemy::canAttack()
 void Enemy::update(const sf::Vector2f& center)
 {
 	// Posição atual do inimigo
-    sf::Vector2f currentPosition = this->shape.getPosition();
+    sf::Vector2f currentPosition = this->sprite.getPosition();
     
     // Calcular a direção para o centro da tela
     sf::Vector2f direction = center - currentPosition;
@@ -84,7 +89,7 @@ void Enemy::update(const sf::Vector2f& center)
     }
     
     // Mover o inimigo na direção do centro
-    this->shape.move(direction * speed);
+    this->sprite.move(direction * speed);
 
 	updateAttack();
 
@@ -99,6 +104,6 @@ void Enemy::updateAttack()
 
 void Enemy::render(sf::RenderTarget* target)
 {
-	target->draw(this->shape);
+	target->draw(this->sprite);
 		
 }

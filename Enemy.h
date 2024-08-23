@@ -8,7 +8,8 @@ class Enemy
 {
 private:
 	unsigned pointCount;
-	sf::CircleShape shape;
+	sf::Sprite sprite;
+	sf::Texture texture;
 	int type;
 	float speed;
 	int hp;
