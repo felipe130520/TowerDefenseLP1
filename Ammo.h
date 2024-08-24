@@ -7,17 +7,19 @@
 class Ammo
 {
 private:
-
-    int ammountOfBullets;
+    //Imagem
     sf::Sprite sprite;
     sf::Texture texture;
-    
+    //Variáveis
+    int ammountOfBullets;
     void initVariables();
 public:
+    //Construtor
     Ammo(const sf::Vector2f& position);
     virtual ~Ammo();
+    //Acessar os limites
     const sf::FloatRect getBounds() const;
-
+    //Renderização
     void render(sf::RenderTarget* target);
 };
 

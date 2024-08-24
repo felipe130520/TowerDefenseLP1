@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 
+//Inicializar variáveis
 void Enemy::initVariables()
 {
 	this->pointCount = rand() % 2 + 3; 
@@ -14,17 +15,12 @@ void Enemy::initVariables()
 	 this->attackCooldownMax = 100.f;
 	 this->attackCooldown = 0.f;
 }
-/*void Enemy::initShape()
-{
-	this->shape.setRadius(this->pointCount * 5);
-	this->shape.setPointCount(this->pointCount);
-	this->shape.setFillColor(sf::Color(rand()%255 +1, rand()%255 + 1, rand()%255 + 1,255));
-}*/
 
+//Construtor
 Enemy::Enemy(float pos_x, float pos_y)
 {
 	this->initVariables();
-	//this->initShape();
+
 	if(!this->texture.loadFromFile("Textures/enemy.png")) {
 		std::cout << "ERROR::ENEMY::INITTEXTURE::Could not load texture file"<<std::endl;
 	}
@@ -38,27 +34,27 @@ Enemy::~Enemy()
 {
 }
 
+//Retornar limites
 const sf::FloatRect Enemy::getBounds() const
 {
 	return this->sprite.getGlobalBounds();
 }
-
+//Retornar pontos
 const int& Enemy::getPoints() const
 {
 	return this->points;
 }
-
+//Retornar dano
 const int& Enemy::getDamage() const
 {
 	return this->damage;
 }
-
+//Retornar posição
 sf::Vector2f Enemy::getPosition() const
 {
     return this->sprite.getPosition();
 }
-
-
+//Verificar se pode atacar
 const bool Enemy::canAttack()
 {
 	if (this->attackCooldown >= this->attackCooldownMax) {
@@ -69,8 +65,7 @@ const bool Enemy::canAttack()
 	return false;
 }
 
-
-
+//Função de atualização
 void Enemy::update(const sf::Vector2f& center)
 {
 	// Posição atual do inimigo
@@ -94,14 +89,14 @@ void Enemy::update(const sf::Vector2f& center)
 	updateAttack();
 
 }
-
+//atualizar o ataque
 void Enemy::updateAttack()
 {
 	if (this->attackCooldown < this->attackCooldownMax) {
 		this->attackCooldown += 0.5f;
 	}
 }
-
+//renderização
 void Enemy::render(sf::RenderTarget* target)
 {
 	target->draw(this->sprite);

@@ -1,12 +1,11 @@
 #include "Ammo.h"
 
+//Inicializar Variável
 void Ammo::initVariables()
 {
     this->ammountOfBullets = 5;
 }
-
-
-
+//Construtor
 Ammo::Ammo(const sf::Vector2f& position)
 {
     this->initVariables();
@@ -23,14 +22,12 @@ Ammo::~Ammo()
 {
 
 }
-
+//Retornar limites
 const sf::FloatRect Ammo::getBounds() const
 {
     return this->sprite.getGlobalBounds();
 }
-
-
-
+//Renderização
 void Ammo::render(sf::RenderTarget* target)
 {
     target->draw(this->sprite);

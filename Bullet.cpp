@@ -1,7 +1,6 @@
 #include "Bullet.h"
 
-Bullet::Bullet() {}
-
+//Construtor
 Bullet::Bullet(float pos_x, float pos_y, float dir_x, float dir_y, float movement_speed)
 {
 	if(!this->texture.loadFromFile("Textures/bullet.png")){
@@ -19,18 +18,17 @@ Bullet::Bullet(float pos_x, float pos_y, float dir_x, float dir_y, float movemen
 Bullet::~Bullet()
 {
 }
-
+//retornar limites
 const sf::FloatRect Bullet::getBounds() const
 {
 	return this->shape.getGlobalBounds();
 }
-
+//Movimentação da bala
 void Bullet::update()
 {
-	//Movement
 	this->shape.move(this->movementSpeed * this->direction);
 }
-
+//Renderização
 void Bullet::render(sf::RenderTarget* target)
 {
 	target->draw(this->shape);

@@ -7,20 +7,23 @@
 class Bullet
 {
 private:
-
+	//imagem
 	sf::Sprite shape;
 	sf::Texture texture;
+	//variaveis
 	sf::Vector2f direction;
 	float movementSpeed;
 
 public:
-	Bullet();
+	//Construtor
 	Bullet(float pos_x, float pos_y, float dir_x, float dir_y, float movement_speed);
 	virtual ~Bullet();
 
-	//Accessor
+	//Acesso aos limites
 	const sf::FloatRect getBounds() const;
+	//atualização
 	void update();
+	//renderização
 	void render(sf::RenderTarget* target);
 };
 

@@ -1,13 +1,12 @@
 #include "Base.h"
 
+//Inicializar variáveis
 void Base::initVariables()
 {
     this->hpMax = 100;
     this->hp = this->hpMax;
 }
-
-
-
+//construtor
 Base::Base(const sf::Vector2f& position)
 {
     this->initVariables();
@@ -21,24 +20,23 @@ Base::Base(const sf::Vector2f& position)
 
 Base::~Base()
 {
-
 }
-
+//Retornar limites
 const sf::FloatRect Base::getBounds() const
 {
     return this->sprite.getGlobalBounds();
 }
-
+//Retronar vida atual
 const int& Base::getHp() const
 {
     return this->hp;
 } 
-
+//Retornar vida máxima
 const int& Base::getHpMax() const
 {
     return this->hpMax;
 }
-
+//Perder vida
 void Base::loseHp(int value)
 {
     this->hp -= value;
@@ -47,23 +45,21 @@ void Base::loseHp(int value)
         this->hp = 0;
     }
 }
-
+//Ganhar vida
 void Base::gainHp(int value) {
-    
+
     if(this->hp + value > this->hpMax) {
         this->hp = this->hpMax;
         return;
     }
-
     this->hp += value;
 }
-
+//Definir vida
 void Base::setHp(int value)
 {
     this->hp = value;
 }
-
-
+//Renderização
 void Base::render(sf::RenderTarget* target)
 {
     target->draw(this->sprite);

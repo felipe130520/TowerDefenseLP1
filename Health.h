@@ -7,18 +7,20 @@
 class Health
 {
 private:
-
-    int ammountOfHp;
+    //Imagem
     sf::Sprite sprite;
     sf::Texture texture;
-    
+
+    //variável
+    int ammountOfHp;
     void initVariables();
 public:
+    //Construtor
     Health(const sf::Vector2f& position);
     virtual ~Health();
+    //Acessar limites
     const sf::FloatRect getBounds() const;
-
-    void update();
+    //Renderização
     void render(sf::RenderTarget* target);
 };
 

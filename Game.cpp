@@ -1,5 +1,6 @@
 #include "Game.h"
 
+//Inicializar a janela
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(800,600), "Atirador bigodudo",sf::Style::Close | sf::Style::Titlebar);
@@ -7,38 +8,39 @@ void Game::initWindow()
 	this->window->setVerticalSyncEnabled(false);
 }
 
-
+//Inicializar interface do usuário
 void Game::initGUI()
 {
-    // Load font
+    //Carregar fonte
     if (!this->font.loadFromFile("Fonts/Honk_Regular.ttf")) {
         std::cout << "ERROR GAME FAILED TO LOAD FONT";
     }
 
-    // Init point text
+    //Inicializar texto de pontos
     this->pointText.setFont(this->font);
     this->pointText.setCharacterSize(24);
     this->pointText.setFillColor(sf::Color::Black);
     this->pointText.setPosition(sf::Vector2f(675.f, 15.f));
 
-	//init ammo text
+	//Inicializar texto da munição
 	this->ammoText.setFont(this->font);
 	this->ammoText.setCharacterSize(24);
 	this->ammoText.setFillColor(sf::Color::Black);
 	this->ammoText.setPosition(sf::Vector2(675.f, 40.f));
 
-	//init playerHp text
+	//Inicializar texto de vida do player
 	this->playerHpText.setFont(this->font);
 	this->playerHpText.setCharacterSize(24);
 	this->playerHpText.setFillColor(sf::Color::Black);
 	this->playerHpText.setPosition(this->playerHpBar.getPosition().x + 230.f, this->playerHpBar.getPosition().y + 25.f);
 
+	//Inicializar texto de de vida da base
 	this->baseHpText.setFont(this->font);
 	this->baseHpText.setCharacterSize(24);
 	this->baseHpText.setFillColor(sf::Color::Black);
 	this->baseHpText.setPosition(this->baseHpBar.getPosition().x + 230.f, this->baseHpBar.getPosition().y + 60.f);
 
-    // Init Game Over text
+    //inicializar texto de game over
     this->gameOverText.setFont(this->font);
     this->gameOverText.setCharacterSize(80);
     this->gameOverText.setFillColor(sf::Color::Red);
@@ -46,7 +48,7 @@ void Game::initGUI()
     this->gameOverText.setPosition(sf::Vector2f((this->window->getSize().x / 2.f) - this->gameOverText.getGlobalBounds().width / 2.f,
                                                 (this->window->getSize().y / 2.f) - this->gameOverText.getGlobalBounds().height / 2.f - 150.f));
 
-	//init You Win text
+	//Inicializar texto de vencer
 	this->YouWinText.setFont(this->font);
     this->YouWinText.setCharacterSize(80);
     this->YouWinText.setFillColor(sf::Color::Green);
@@ -55,7 +57,7 @@ void Game::initGUI()
                                                 (this->window->getSize().y / 2.f) - this->YouWinText.getGlobalBounds().height / 2.f - 150.f));
 
 
-    // Init player GUI
+    //Inicializar barra de vida do player
     this->playerHpBar.setSize(sf::Vector2f(200.f, 25.f));
 	this->playerHpBar.setFillColor(sf::Color::Green);
 	this->playerHpBar.setPosition(25.f, 25.f);
@@ -64,7 +66,7 @@ void Game::initGUI()
 	this->playerHpBarBack.setFillColor(sf::Color::Red);
 
 
-    // Init base GUI
+    //Inicializar barra de vida da base
     this->baseHpBar.setSize(sf::Vector2f(200.f, 25.f));
     this->baseHpBar.setFillColor(sf::Color::Blue); 
     this->baseHpBar.setPosition(sf::Vector2f(25.f, 65.f)); 
@@ -75,6 +77,7 @@ void Game::initGUI()
 
 }
 
+//Inicializar o plane de fundo
 void Game::initBackground()
 {
 	if (!this->BackgroundTexture.loadFromFile("Textures/street.png")) {
@@ -85,21 +88,13 @@ void Game::initBackground()
 
 
 }
-
+//Inicializar os pontos
 void Game::initSystems()
 {
 	this->points = 0;
 }
 
-void Game::initMusic()
-{
-	if (!this->music.openFromFile("Sounds/La_Fiesta_De_Los_Panes.mp3")) {
-		std::cout<<"ERROR :: MUSIC :: COULD NOT LOAD MUSIC"<<std::endl;
-	}
-	music.setVolume(10.f);
-	music.play();
-}
-
+//Inicializar a base
 void Game::initBase()
 {
 	sf::Vector2f center(this->window->getSize().x / 2.f - 30.f, this->window->getSize().y / 2.f - 30.f);
@@ -107,7 +102,8 @@ void Game::initBase()
 	this->base = new Base(center);
 }
 
-void Game::initPlayer()
+//Inicializar o player e as variaveis de dificuldade do jogo
+void Game::initPlayerAndVariables()
 {
 	this->spawnTimer = this->spawnTimerMax;
 	this->spawnTimerMax = 100.f;
@@ -121,27 +117,19 @@ void Game::initPlayer()
 
 }
 
-
-void Game::initEnemies()
-{
-
-}
-
-//Con/Des
+//Construtor
 Game::Game()
 {
-
 	this->initWindow();
 
 	this->initGUI();
 	this->initBackground();
-	this->initMusic();
 	this->initSystems();
 	this->initBase();
-	this->initPlayer();
-	this->initEnemies();
+	this->initPlayerAndVariables();
 }
 
+//Destrutor
 Game::~Game()
 {
 	delete this->window;
@@ -162,16 +150,16 @@ Game::~Game()
 	}
 }
 
-//Functions
 
+//função principal de rodar o jogo
 void Game::run(){
 	this->pausado = false;
 
     while (window->isOpen())
     {
         this->updatePollEvents();
-
-        if (this->player->getHp() > 0 && this->base->getHp() > 0 && this->points < 200)
+		//Rodar em quanto o player e a base tiverem vida e enquanto não alcançar 150 pontos
+        if (this->player->getHp() > 0 && this->base->getHp() > 0 && this->points < 150)
         {
             if (!this->pausado)
             {
@@ -180,13 +168,9 @@ void Game::run(){
 
             this->render();
         }
-        else
-        {
-            this->music.stop();
-        }
     }
 }
-
+//Trocar o estado de pause
 void Game::togglePausado(){
 	this->pausado = !this->pausado;
 }
@@ -198,12 +182,15 @@ void Game::updatePollEvents()
 		if (e.type == sf::Event::Closed) {
 			this->window->close();
 		}
+		//Fechar se apertar esc
 		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
             this->window->close();
 		}
+		//Pausar se apertar P
 		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::P) {
             this->togglePausado();
         }
+		//Reiniciar se apertar R
 		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::R) {
 			this->restartGame();
 		}
@@ -212,8 +199,7 @@ void Game::updatePollEvents()
 
 void Game::updateInput()
 {
-	//Move player
-
+	//Movimentação do player
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))//LEFT 
 	{
 		this->player->move(-1.f, 0.f);
@@ -233,13 +219,14 @@ void Game::updateInput()
 	}
 
 
-	//Detect key pressed for shooting && shooting at mouse position
+	//Detectar a posição do mouse e atirar na direção dele
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && this->player->canAttack()) {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
     sf::Vector2f playerPosition = this->player->getPos();
     sf::Vector2f direction = sf::Vector2f(mousePosition.x, mousePosition.y) - playerPosition;
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
+		//Atirar
         if (length != 0 && this->player->getAmmo() > 0) {
             direction /= length;
 
@@ -252,6 +239,7 @@ void Game::updateInput()
 	}
 }
 
+//Atualizar a interface de usuário
 void Game::updateGUI()
 {
 	std::stringstream GUIpoints;
@@ -270,65 +258,56 @@ void Game::updateGUI()
 	this->baseHpText.setString(GUIbaseHpText.str());
 
 	
-	//update player GUI
+	//Atualizar a interface do player
 	float playerHpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
 	this->playerHpBar.setSize(sf::Vector2f(200.f * playerHpPercent,this->playerHpBar.getSize().y));
 
-	//update base GUI
+	//Atualizar a interface da base
 	float baseHpPercent = static_cast<float>(this->base->getHp()) / this->base->getHpMax();
 	this->baseHpBar.setSize(sf::Vector2f(200.f * baseHpPercent, this->baseHpBar.getSize().y));
 }
 
-void Game::updateWorld()
-{
-
-}
-
-
+//Atualizar a colisão com as bordas da tela
 void Game::updateCollision()
 {
-	//Left world collision
+	//Esquerda
 	if (this->player->getBounds().left < 0.f) {
 		this->player->setPosition(0.f, this->player->getBounds().top);
 	}
-	//Top world collision
+	//Cima
 	if (this->player->getBounds().top < 0.f) {
 		this->player->setPosition(this->player->getBounds().left,0.f);
 	}
-	//Right world collision
+	//Direita
 	if (this->player->getBounds().left + this->player->getBounds().width >= this->window->getSize().x) {
 		this->player->setPosition(this->window->getSize().x - this->player->getBounds().width, this->player->getBounds().top);
 	}
-	//Bottom world collision
+	//Baixo
 	if (this->player->getBounds().top + this->player->getBounds().height >= this->window->getSize().y) {
 		this->player->setPosition(this->player->getBounds().left ,this->window->getSize().y - this->player->getBounds().height);
 	}
 }
 
+//Atualizar as balas do player
 void Game::updateBullets()
 {
 	unsigned counter = 0;
 
 	for (auto* bullet : this->bullets) {
 		bullet->update();
-
-		//Bullet culling (top of screen)
 		if (bullet->getBounds().top + bullet->getBounds().height < 0.f) {
-
-			//Delete bullet
-
+			//Deletar bala
 			delete this->bullets.at(counter);
 			this->bullets.erase(this->bullets.begin()+ counter);
 			--counter;
 
-			//Balas sao deletadas? OK
-			//std::cout << this->bullets.size() << "\n";
 		}
 		
 		counter++;
 	}
 }
 
+//Atualizar as balas dos inimigos
 void Game::updateEnemieBullets(){
 
 	for(size_t i = 0; i < this->enemyBullets.size(); i++){
@@ -336,20 +315,20 @@ void Game::updateEnemieBullets(){
 
 		this->enemyBullets[i]->update();
 		bool erased=false;
-		
+		//Checar se colidiu com o player
 		if(this->enemyBullets[i]->getBounds().intersects(this->player->getBounds())){
 			this->player->loseHp(5);
 			this->enemyBullets.erase(this->enemyBullets.begin() + i);
 			erased = true;
 		}
-
+		//Checar se colidiu com a base
 		if(erased == false && this->enemyBullets[i]->getBounds().intersects(this->base->getBounds())){
 			this->base->loseHp(5);
 			this->enemyBullets.erase(this->enemyBullets.begin() + i);
 		}
 	}
 
-	//Faz o inimigo atirar
+	//Fazer o inimigo atirar
 	for(int i = 0; i < this->enemies.size(); i++){
 
 		if(this->enemies[i]->canAttack()){
@@ -397,11 +376,6 @@ void Game::updateEnemiesAndCombat()
 	// calcula o centro da tela
     sf::Vector2f center(this->window->getSize().x / 2.f, this->window->getSize().y / 2.f);
 
-	// // // // //
-	/*for (auto* enemy : this->enemies) {
-		enemy->update();
-	}*/
-
 	for (int i = 0;i < enemies.size();i++) {
 		bool enemy_removed = false;
 
@@ -409,12 +383,12 @@ void Game::updateEnemiesAndCombat()
 		
 		for (size_t k = 0;k < this->bullets.size() && !enemy_removed;k++) {
 
-			//Check if enemy hit by bullet
+			//Checar se o inimigo foi acertado por uma bala
 			if (this->bullets[k]->getBounds().intersects(this->enemies[i]->getBounds())) {
 
 				this->bullets.erase(this->bullets.begin() + k);
 
-				//Adding points based on the enemy value
+				//Aumentar os pontos
 				this->points += this->enemies[i]->getPoints();
 
                 //chance de criar munição e health
@@ -434,7 +408,7 @@ void Game::updateEnemiesAndCombat()
 
 		if (!enemy_removed) {
 			
-			//Enemy-player collision
+			//Colisão entre player e inimigos
 			if (this->enemies[i]->getBounds().intersects(this->player->getBounds())) {
 				this->player->loseHp(this->enemies.at(i)->getDamage());
                 if((rand() % 100) <= 19){
@@ -456,16 +430,16 @@ void Game::updateEnemiesAndCombat()
 	
 	}
 }
-
+//Atualizar a coleta de munição
 void Game::updateAmmoCollection(){
 	for(int i = 0; i < this->Ammos.size(); i++){
 		if(this->Ammos[i]->getBounds().intersects(this->player->getBounds())) {
-			this->player->gainAmmo(5);
+			this->player->gainAmmo(rand() % 5 + 1);
 			this->Ammos.erase(this->Ammos.begin() + i);
 		}
 	}
 }
-
+//Atualizar a coleta de vida
 void Game::updateHealthCollection() {
 	for(int i = 0; i < this->healths.size(); i++) {
 		if(this->healths[i]->getBounds().intersects(this->player->getBounds())) {
@@ -475,7 +449,7 @@ void Game::updateHealthCollection() {
 	}
 }
 
-
+//Função principal de atualização
 void Game::update()
 {
 
@@ -493,8 +467,6 @@ void Game::update()
 
 	this->updateGUI();
 
-	this->updateWorld();
-
 	this->updateAmmoCollection();
 
 	this->updateHealthCollection();
@@ -502,6 +474,7 @@ void Game::update()
 	this->updateGameDificulty();
 }
 
+//Renderizar a interface
 void Game::renderGUI()
 {
 	//text
@@ -515,27 +488,20 @@ void Game::renderGUI()
 	this->window->draw(this->playerHpBar);
 	this->window->draw(this->baseHpBarBack);
 	this->window->draw(this->baseHpBar);
-
-	
-	
 }
 
-
+//Renderizar o plano de fundo
 void Game::renderBackground()
 {
 	this->window->draw(this->Background);
 }
 
-
+//Função principal de renderização
 void Game::render()
 {
-	//Clear
 	this->window->clear();
 
-	//Draw background
 	this->renderBackground();
-
-	//Draw stuff
 
 	this->base->render(this->window);
 
@@ -563,7 +529,7 @@ void Game::render()
 
 	this->renderGUI();
 	
-	//Game over screen
+	//Tela de game over
 	if (this->player->getHp() <= 0) {
 		this->window->draw(this->gameOverText);
 	}
@@ -572,17 +538,17 @@ void Game::render()
         this->window->draw(this->gameOverText);
     }
 	
-	if(this->points >= 200) {
+	//Tela de ganhou
+	if(this->points >= 150) {
 		this->window->draw(this->YouWinText);
 	}
-	//Display stuff
+
 	this->window->display();
 }
 
 void Game::restartGame() {
 
-	// resetar tudo
-	
+	//Resetar tudo
 	sf::Vector2f center(this->window->getSize().x / 2.f, this->window->getSize().y / 2.f);
 
 	this->player->setPosition(center);
@@ -612,6 +578,7 @@ void Game::restartGame() {
 		this->healths.erase(this->healths.begin() + i);
 	}
 
+	//Resetar os aumentos de dificuldade
 	this->firstDifIncrease = false;
 	this->secondDifIncrease = false;
 	this->thirdDifIncrease = false;
@@ -619,19 +586,20 @@ void Game::restartGame() {
 	this->spawnTimerMax = 100.f;
 }
 
+//Aumentar a dificuldade do jogo com base nos pontos
 void Game::updateGameDificulty() {
 
-	if(this->points > 50 && !this->firstDifIncrease) {
+	if(this->points > 40 && !this->firstDifIncrease) {
 		this->spawnTimerMax -= 20.f;
 		this->firstDifIncrease = true;
 	}
 
-	if(this->points > 100 && !this->secondDifIncrease) {
+	if(this->points > 70 && !this->secondDifIncrease) {
 		this->spawnTimerMax -= 20.f;
 		this->secondDifIncrease = true;
 	}
 
-	if(this->points > 150 && !this->thirdDifIncrease) {
+	if(this->points > 100 && !this->thirdDifIncrease) {
 		this->spawnTimerMax -= 20.f;
 		this->thirdDifIncrease = true;
 	}

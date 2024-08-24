@@ -76,30 +76,28 @@ private:
 	bool secondDifIncrease;
 	bool thirdDifIncrease;
 	
-	//Private functions
+	//Funções de inicialização
 	void initWindow();
 
 	void initGUI();
 	void initBackground();
 	void initSystems();
-	void initMusic();
 	
 	void initBase();
-	void initPlayer();
-	void initEnemies();
+	void initPlayerAndVariables();
 public:
+	//Construtor e destrutor
 	Game();
 	virtual ~Game();
 
-	//Functions
+	//Função princial
 	void run();
 
-
+	//Funções de atualização
 	void togglePausado();
 	void updatePollEvents();
 	void updateInput();
 	void updateGUI();
-	void updateWorld();
 	void updateCollision();
 	void updateBullets();
 	void updateEnemieBullets();
@@ -107,13 +105,15 @@ public:
 	void updateAmmoCollection();
 	void updateHealthCollection();
 	void update();
+	void updateGameDificulty();
+
+	//Funções de renderização
 	void renderGUI();
 	void renderBackground();
 	void render();
 
+	//Reinciar o jogo
 	void restartGame();
-	void updateGameDificulty();
-
 };
 
 #endif
