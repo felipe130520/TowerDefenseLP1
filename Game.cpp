@@ -171,7 +171,7 @@ void Game::run(){
     {
         this->updatePollEvents();
 
-        if (this->player->getHp() > 0 && this->base->getHp() > 0 && this->points < 40)
+        if (this->player->getHp() > 0 && this->base->getHp() > 0 && this->points < 200)
         {
             if (!this->pausado)
             {
@@ -417,11 +417,15 @@ void Game::updateEnemiesAndCombat()
 				//Adding points based on the enemy value
 				this->points += this->enemies[i]->getPoints();
 
-                //chance de criar munição
-                if((rand() % 100) <= 24){
+                //chance de criar munição e health
+				int randomNum = rand() % 100;
+                if(randomNum <= 19){
                     this->Ammos.push_back(new Ammo(this->enemies[i]->getPosition()));
 
                 }
+				if(randomNum <= 39 && randomNum >= 20) {
+					this->healths.push_back(new Health(this->enemies[i]->getPosition()));
+				}
 
 				this->enemies.erase(this->enemies.begin() + i);
 				enemy_removed = true;
@@ -433,7 +437,7 @@ void Game::updateEnemiesAndCombat()
 			//Enemy-player collision
 			if (this->enemies[i]->getBounds().intersects(this->player->getBounds())) {
 				this->player->loseHp(this->enemies.at(i)->getDamage());
-                if((rand() % 100) <= 24){
+                if((rand() % 100) <= 19){
                     this->Ammos.push_back(new Ammo(this->enemies[i]->getPosition()));
 
                 }
@@ -454,10 +458,19 @@ void Game::updateEnemiesAndCombat()
 }
 
 void Game::updateAmmoCollection(){
-	for(int i = 0; i < Ammos.size(); i++){
+	for(int i = 0; i < this->Ammos.size(); i++){
 		if(this->Ammos[i]->getBounds().intersects(this->player->getBounds())) {
 			this->player->gainAmmo(5);
 			this->Ammos.erase(this->Ammos.begin() + i);
+		}
+	}
+}
+
+void Game::updateHealthCollection() {
+	for(int i = 0; i < this->healths.size(); i++) {
+		if(this->healths[i]->getBounds().intersects(this->player->getBounds())) {
+			this->base->gainHp(10);
+			this->healths.erase(this->healths.begin() + i);
 		}
 	}
 }
@@ -483,6 +496,8 @@ void Game::update()
 	this->updateWorld();
 
 	this->updateAmmoCollection();
+
+	this->updateHealthCollection();
 
 	this->updateGameDificulty();
 }
@@ -524,6 +539,9 @@ void Game::render()
 
 	this->base->render(this->window);
 
+	for(auto* health : this->healths) {
+		health->render(this->window);
+	}
 	for (auto* bullet : this->bullets) {
 		bullet->render(this->window);
 	}
@@ -554,7 +572,7 @@ void Game::render()
         this->window->draw(this->gameOverText);
     }
 	
-	if(this->points >= 40) {
+	if(this->points >= 200) {
 		this->window->draw(this->YouWinText);
 	}
 	//Display stuff
@@ -590,6 +608,10 @@ void Game::restartGame() {
 		this->Ammos.erase(this->Ammos.begin() + i);
 	}
 
+	for(int i = this->healths.size() - 1; i>= 0; i--) {
+		this->healths.erase(this->healths.begin() + i);
+	}
+
 	this->firstDifIncrease = false;
 	this->secondDifIncrease = false;
 	this->thirdDifIncrease = false;
@@ -599,18 +621,18 @@ void Game::restartGame() {
 
 void Game::updateGameDificulty() {
 
-	if(this->points > 10 && !this->firstDifIncrease) {
-		this->spawnTimerMax -= 15.f;
+	if(this->points > 50 && !this->firstDifIncrease) {
+		this->spawnTimerMax -= 20.f;
 		this->firstDifIncrease = true;
 	}
 
-	if(this->points > 20 && !this->secondDifIncrease) {
-		this->spawnTimerMax -= 15.f;
+	if(this->points > 100 && !this->secondDifIncrease) {
+		this->spawnTimerMax -= 20.f;
 		this->secondDifIncrease = true;
 	}
 
-	if(this->points > 30 && !this->thirdDifIncrease) {
-		this->spawnTimerMax -= 15.f;
+	if(this->points > 150 && !this->thirdDifIncrease) {
+		this->spawnTimerMax -= 20.f;
 		this->thirdDifIncrease = true;
 	}
 

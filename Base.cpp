@@ -6,19 +6,17 @@ void Base::initVariables()
     this->hp = this->hpMax;
 }
 
-void Base::initShape(const sf::Vector2f& position)
-{
-    sf::Vector2f baseSize(100.f, 100.f);
 
-    this->shape.setSize(baseSize);
-    this->shape.setFillColor(sf::Color::Black);
-    this->shape.setPosition(position);
-}
 
 Base::Base(const sf::Vector2f& position)
 {
     this->initVariables();
-    this->initShape(position);
+    if(!this->texture.loadFromFile("Textures/tacoTruck.png")){
+		std::cout << "ERROR::BULLET::INITTEXTURE::Could not load texture file"<<std::endl;
+	}
+    this->sprite.setTexture(this->texture);
+    this->sprite.setScale(0.35f, 0.35f);
+    this->sprite.setPosition(position.x - 40.f, position.y - 40.f);
 }
 
 Base::~Base()
@@ -28,7 +26,7 @@ Base::~Base()
 
 const sf::FloatRect Base::getBounds() const
 {
-    return this->shape.getGlobalBounds();
+    return this->sprite.getGlobalBounds();
 }
 
 const int& Base::getHp() const
@@ -50,17 +48,23 @@ void Base::loseHp(int value)
     }
 }
 
+void Base::gainHp(int value) {
+    
+    if(this->hp + value > this->hpMax) {
+        this->hp = this->hpMax;
+        return;
+    }
+
+    this->hp += value;
+}
+
 void Base::setHp(int value)
 {
     this->hp = value;
 }
 
-void Base::update()
-{
-
-}
 
 void Base::render(sf::RenderTarget* target)
 {
-    target->draw(this->shape);
+    target->draw(this->sprite);
 }

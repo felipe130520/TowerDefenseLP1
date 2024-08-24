@@ -8,6 +8,7 @@
 #include "Base.h"
 #include "Ammo.h"
 #include "EnemyBullet.h"
+#include "Health.h"
 #include <cmath>
 #include<string>
 #include<sstream>
@@ -65,6 +66,8 @@ private:
 
 	std::vector<EnemyBullet*> enemyBullets; 
 
+	std::vector<Health*> healths;
+
 	//Pausar
 	bool pausado;
 	
@@ -102,6 +105,7 @@ public:
 	void updateEnemieBullets();
 	void updateEnemiesAndCombat();
 	void updateAmmoCollection();
+	void updateHealthCollection();
 	void update();
 	void renderGUI();
 	void renderBackground();

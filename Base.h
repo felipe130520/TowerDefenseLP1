@@ -3,16 +3,17 @@
 
 
 #include <SFML/Graphics.hpp>
-
+#include <iostream>
 
 class Base
 {
 private:
-    sf::RectangleShape shape;
+    sf::Sprite sprite;
+    sf::Texture texture;
     int hp;
     int hpMax;
     void initVariables();
-    void initShape(const sf::Vector2f& position);
+
 public:
     Base(const sf::Vector2f& position);
     virtual ~Base();
@@ -22,9 +23,9 @@ public:
     const int& getHpMax() const;
 
     void loseHp(int value);
+    void gainHp(int value);
     void setHp(int value);
 
-    void update();
     void render(sf::RenderTarget* target);
 };
 
