@@ -3,13 +3,16 @@ Aldo Queiroz Cabral da Fonseca Tinoco
 Felipe Augusto Lemos Barreto  
 João Pedro Silva de Fontes Pereira  
 
+# Demonstração do Jogo  
+Vídeo do Youtube: https://youtu.be/2dYsyy1ym6c  
+
 # Compilação 
 
 Basta rodar o seguinte comando no terminal para realizar a compilação:  
 g++ Main.cpp Base.h Base.cpp Game.cpp Game.h Player.cpp Player.h Bullet.h Bullet.cpp Enemy.cpp Enemy.h Ammo.h Ammo.cpp EnemyBullet.h EnemyBullet.cpp Health.h Health.cpp -o jogo -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network  
 Em seguida, rodar: ./jogo  
 
-OBS: É necessário ter a biblioteca SFML instalada em algum repositório padrão da sua máquina.
+OBS: É necessário ter a biblioteca SFML instalada em algum repositório padrão da sua máquina.  
 Link para instalar o SFML: https://www.sfml-dev.org/download/sfml/2.6.1/
 # Recursos implementados  
 
