@@ -26,7 +26,7 @@ void Game::initGUI()
 	this->ammoText.setFont(this->font);
 	this->ammoText.setCharacterSize(24);
 	this->ammoText.setFillColor(sf::Color::Black);
-	this->ammoText.setPosition(sf::Vector2(675.f, 40.f));
+	this->ammoText.setPosition(sf::Vector2f(675.f, 40.f));
 
 	//Inicializar texto de vida do player
 	this->playerHpText.setFont(this->font);
